@@ -35,6 +35,18 @@ module SmToAnki
     # read course.xml, retrieve an courses' information
     # Return an array of nested courses
     #
+    #     course.xml will be converted to:
+    #      {
+    #        "title"=>"Fake Course", 
+    #        "Category1"=>["00002", "00003"], 
+    #        "Category2"=>{
+    #          "sub-category1"=>["00006"], 
+    #          "sub-category2"=>{
+    #            "category-level-3"=>["00008"]
+    #          }
+    #        }
+    #      }
+    #
     def fetch_course_info
       File.open("#{@process_dir}/course.xml") do |course|
         @course_doc = Nokogiri.XML(course)
@@ -44,19 +56,21 @@ module SmToAnki
 
       @course_info['title'] = @course_doc.at('title').text()
       @course_info.merge!(fetch_node(@course_doc.at('course')))
-#     course.xml will be converted to:
-#      {
-#        "title"=>"Fake Course", 
-#        "Category1"=>["00002", "00003"], 
-#        "Category2"=>{
-#          "sub-category1"=>["00006"], 
-#          "sub-category2"=>{
-#            "category-level-3"=>["00008"]
-#          }
-#        }
-#      }
     end
 
+    def build_anki_dir
+      # build subdirectory according from fetched course information
+    end
+
+    def detect_exercise_type(item_url)
+      return true
+      # call the processing function accordingly
+      # Store different types in different text files
+    end
+
+    def post_process
+      # move processed itemxxxx.xml to processed_items
+    end
 
     private
     def fetch_node(node)
@@ -79,18 +93,6 @@ module SmToAnki
       end
     end
 
-    def build_anki_dir
-      # build subdirectory according from fetched course information
-    end
-
-    def detect_exercice_type
-      # call the processing function accordingly
-      # Store different types in different text files
-    end
-
-    def post_process
-      # move processed itemxxxx.xml to processed_items
-    end
   end
 
   module ItemProcessor
