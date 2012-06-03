@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item xmlns="http://www.supermemo.net/2006/smux">
+  <question>This is a question to test html tags to be preserved.</question>
+  <answer><span>bold</span><br />confuse and surprise</answer>
+  <modified>2011-01-28</modified>
+  <template-id>1</template-id>
+</item>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item xmlns="http://www.supermemo.net/2006/smux">
+  <question>what does the selector div * em match? <gfx file="b" /><br />
+<checkbox display="inline"><option correct="true">“Universal” in the h1 element</option><option correct="true">“emphasize” in the p element</option><option correct="true">“not” in the first li element</option><option correct="true">“type” in the second li element</option><option>“immediate” in the forth em element</option></checkbox>
+<br />
+<br />
+</question>
+  <answer>the universal selector doesn’t match “zero or more elements.<span style="font-style: italic;"><h1 /></span></answer>
+  <modified>2011-02-25</modified>
+  <template-id>1</template-id>
+</item>

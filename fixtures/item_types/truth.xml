@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item xmlns="http://www.supermemo.net/2006/smux">
+  <question>Doctype sniffing is undertaken regardless of doc's MIME type. <true-false true="True" false="False" correct="false" labels="true" /></question>
+  <answer>Doctype sniffing is <span style="text-decoration: underline;">only undertaken</span> for documents served with a MIME type of <span style="font-weight: bold;">text/html.<br />
+</span>The specification of any XML MIME type automatically triggers standards mode.</answer>
+  <modified>2011-03-06</modified>
+  <template-id>1</template-id>
+</item>
