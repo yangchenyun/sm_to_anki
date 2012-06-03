@@ -1,0 +1,33 @@
+﻿<!-- {"title"=>"Fake Course", "Category1"=>["00002", "00003"], "Category2"=>{"sub-category1"=>["00006"], "sub-category2"=>{"category-level-3"=>["00008"]}}} -->
+<?xml version="1.0" encoding="utf-8"?>
+<course xmlns="http://www.supermemo.net/2006/smux">
+  <guid>b258b4b0-aff6-416a-b36f-d82dc16a0a3c</guid>
+  <title>Fake Course</title>
+  <created>2010-11-28</created>
+  <modified>2010-11-29</modified>
+  <language-of-instruction>en</language-of-instruction>
+  <language-taught>en</language-taught>
+  <default-items-per-day>10</default-items-per-day>
+  <default-template-id>1</default-template-id>
+  <type>regular</type>
+  <sorting>default</sorting>
+  <version>1.0.267</version>
+
+  <element id="1" type="pres" name="Category1">
+    <element id="2" type="exercise" name="1" />
+    <element id="3" type="exercise" name="What's the relationship between..." />
+  </element>
+
+  <element id="4" type="pres" name="Category2">
+    <element id="5" type="pres" name="sub-category1">
+      <element id="6" type="exercise" name="1" />
+    </element>
+
+    <element id="7" type="pres" name="sub-category2">
+      <element id="9" type="pres" name="category-level-3">
+        <element id="8" type="exercise" name="1" />
+      </element>
+    </element>
+  </element>
+
+</course>
