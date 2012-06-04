@@ -22,8 +22,38 @@ require 'nokogiri'
 # {course_name}.media/
 
 module SmToAnki
+  module ItemProcessor
+    
+    def simple_qa(question, answer)
+      # process the item.xml as simple Question and Answer
+      # write to output text
+      # {{Question}}, {{Answer}}, {{Explanation}}, [{{Image_URL}}], {{}}
+      return {}
+    end
+    
+    def cloze(question, answer)
+      # process the item.xml as blank filling questions
+      # write to output text
+      # 
+      return {}
+    end
+    
+    def truth(question, answer)
+      # process item.xml as a truthy question
+      return {}
+    end
+
+    def checkbox(question, answer)
+      return {}
+    end
+
+    def radio(question, answer)
+      return {}
+    end
+  end
   
   class CourseProcessor
+    include SmToAnki::ItemProcessor
     attr_reader :process_dir, :course_doc, :course_info
     # Read the course.xml file
     # Your code goes here...
@@ -63,9 +93,19 @@ module SmToAnki
     end
 
     def detect_exercise_type(item_url)
-      return true
       # call the processing function accordingly
       # Store different types in different text files
+      item = Nokogiri.XML(File.open(item_url))
+      answer = item.at_css('item > answer').inner_html if item.at_css('item answer')
+      question = item.at_css('item > question').inner_html if item.at_css('item question')
+      return nil unless question
+      case question
+        when /checkbox/ then checkbox(question, answer)
+        when /spellpad/ then cloze(question, answer)
+        when /radio/ then radio(question, answer)
+        when /true-false/ then truth(question, answer)
+        else simple_qa(question, answer)
+      end
     end
 
     def post_process
@@ -95,33 +135,6 @@ module SmToAnki
 
   end
 
-  module ItemProcessor
-    
-    def simple_qa(tags)
-      tags.push('simple_qa')
-      # process the item.xml as simple Question and Answer 
-      # write to output text
-      # {{Question}}, {{Answer}}, {{Explanation}}, [{{Image_URL}}], {{Tags}}
-    end
-    
-    def blank_qa(tags)
-      tags.push('blank_filling')
-      # process the item.xml as blank filling questions
-      # write to output text
-      # 
-    end
-    
-    def truth_qa(tags)
-      tags.push('truthy')
-      # process item.xml as a truthy question
-    end
-
-    def multi_choice_qa(tags)
-      tags.push('multi_choice')
-      
-    end
-
-  end
 
 
   module ProcessorHelper
