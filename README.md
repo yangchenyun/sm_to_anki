@@ -28,8 +28,8 @@ Or install it yourself as:
 `course.xml` which stores the course category and hierarchy.
 `itemxxxxx.xml` stores the item question and answer. In Supermemo UX it contains four types:
   * Simple Question and Answer
-  * True or False 
-  * Multiple choices 
+  * True or False
+  * Multiple choices
   * Pick the right choice
   * Cloze
 `media` file contains the media files refered by
@@ -44,7 +44,7 @@ Or install it yourself as:
         - truth.txt
       - sub_category2
     {course_title}.media/
-    processed_item.txt
+    {course_title}_processed_item.txt
 
 The hierachy between course items are preserved with file system hierarchy
 Items are stored according to their types and are within the category they belong to

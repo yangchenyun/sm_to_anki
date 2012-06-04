@@ -25,7 +25,11 @@ describe SmToAnki::CourseProcessor do
 
     it "should fetch the course title right" do
       @course_processor.course_info.has_key?("title").must_equal true
-      @course_processor.course_info['title'] == "Fake Course"
+      @course_processor.course_info['title'].must_equal "fake_course"
+    end
+
+    it "should remember the items processed before" do
+      @course_processor.processed_items.must_equal ["00010", "00012", "00013"]
     end
 
     it "element[type=pres] will store the [:name] as hash keys " do

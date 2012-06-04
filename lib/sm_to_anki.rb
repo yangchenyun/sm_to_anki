@@ -7,38 +7,27 @@ require 'nokogiri'
 module SmToAnki
   class CourseProcessor
     include SmToAnki::ItemProcessor
-    attr_reader :process_dir, :course_doc, :course_info
-    # Read the course.xml file
-    # Your code goes here...
+
+    # process_dir contains current working directory
+    # course_doc is the hold an Nokogiri instance of course.xml
+    # course_info holds an Ruby hash containing the course information
+    # processed_items holds an array of ids of items processed before
+    attr_reader :process_dir, :course_doc, :course_info, :processed_items
+    
     def initialize(psw)
       @process_dir = psw
       @course_info = Hash.new
+      @processed_items = File.open("#{@process_dir}/processed_items.txt").read.chomp!.split(',')
     end
 
-    # read course.xml, retrieve an courses' information
-    # Return an array of nested courses
-    #
-    #     course.xml will be converted to:
-    #      {
-    #        "title"=>"Fake Course", 
-    #        "Category1"=>["00002", "00003"], 
-    #        "Category2"=>{
-    #          "sub-category1"=>["00006"], 
-    #          "sub-category2"=>{
-    #            "category-level-3"=>["00008"]
-    #          }
-    #        }
-    #      }
-    #
     def fetch_course_info
-      File.open("#{@process_dir}/course.xml") do |course|
-        @course_doc = Nokogiri.XML(course)
+      @course_doc = Nokogiri.XML(File.open("#{@process_dir}/course.xml"))
+      if @course_doc
+        @course_info['title'] = @course_doc.at('title').
+                                  text.downcase.sub(/\s/, '_')
+
+        @course_info.merge!(fetch_node(@course_doc.at('course')))
       end
-
-      return unless @course_doc
-
-      @course_info['title'] = @course_doc.at('title').text.downcase.sub(/\s/, '_')
-      @course_info.merge!(fetch_node(@course_doc.at('course')))
     end
 
     def build_anki_dir
