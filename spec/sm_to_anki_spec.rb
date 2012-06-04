@@ -33,24 +33,24 @@ describe SmToAnki::CourseProcessor do
     end
 
     it "element[type=pres] will store the [:name] as hash keys " do
-      @course_processor.course_info.has_key?('Category1').must_equal true
-      @course_processor.course_info.has_key?('Category2').must_equal true
-      @course_processor.course_info['Category2'].has_key?('sub-category1').must_equal true
+      @course_processor.course_info['content'].has_key?('Category1').must_equal true
+      @course_processor.course_info['content'].has_key?('Category2').must_equal true
+      @course_processor.course_info['content']['Category2'].has_key?('sub-category1').must_equal true
     end
 
     it "element[type=pres] hierarchy will be preserved" do
-      @course_processor.course_info.has_key?('sub-category1').must_equal false
-      @course_processor.course_info['Category2'].has_key?('sub-category1').must_equal true
-      @course_processor.course_info['Category2']['sub-category2'].has_key?("category-level-3").must_equal true
+      @course_processor.course_info['content'].has_key?('sub-category1').must_equal false
+      @course_processor.course_info['content']['Category2'].has_key?('sub-category1').must_equal true
+      @course_processor.course_info['content']['Category2']['sub-category2'].has_key?("category-level-3").must_equal true
     end
     
     it "exercises will be stored in an array and grouped by its parent" do
-      @course_processor.course_info['Category1'].must_be_instance_of Array
-      @course_processor.course_info['Category1'].length.must_equal 2
+      @course_processor.course_info['content']['Category1'].must_be_instance_of Array
+      @course_processor.course_info['content']['Category1'].length.must_equal 2
     end
 
     it "should fetch the id from element[type=exercise] and keep 5 digitals" do
-      @course_processor.course_info['Category1'].must_equal ['00002', '00003']
+      @course_processor.course_info['content']['Category1'].must_equal ['00002', '00003']
     end
 
     ## detect_item_types

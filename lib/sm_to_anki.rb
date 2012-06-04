@@ -26,12 +26,22 @@ module SmToAnki
         @course_info['title'] = @course_doc.at('title').
                                   text.downcase.sub(/\s/, '_')
 
-        @course_info.merge!(fetch_node(@course_doc.at('course')))
+        @course_info.merge!({"content" => fetch_node(@course_doc.at('course'))})
       end
     end
 
-    def build_anki_dir
-      # build subdirectory according from fetched course information
+    def process_course
+      # mkdir {course_title}_anki
+      # cd {course_title}.anki
+      # travel through the branches(keys)
+      # if the 
+       
+    end
+
+    def process_item(item_id)
+        unless processed?(item_id)
+          detect_exercise_type("#{item_id}.xml")
+        end
     end
 
     def detect_exercise_type(item_url)

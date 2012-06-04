@@ -25,7 +25,21 @@ Or install it yourself as:
       - media
         -- xxxxx.jpg
 
-`course.xml` which stores the course category and hierarchy.
+`course.xml` which stores the course category and hierarchy. 
+
+     {
+       "title"=>"fake_course", 
+       "content" => {
+         Category1"=>["00002", "00003"], 
+         "Category2"=>{
+           "sub-category1"=>["00006"], 
+           "sub-category2"=>{
+             "category-level-3"=>["00008"]
+           }
+         }
+       }
+     }
+
 `itemxxxxx.xml` stores the item question and answer. In Supermemo UX it contains four types:
   * Simple Question and Answer
   * True or False
