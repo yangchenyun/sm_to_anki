@@ -1,57 +1,10 @@
 require "sm_to_anki/version"
+require "sm_to_anki/item_process"
+
 require 'nokogiri'
 
-# The input is 
-# Memo_course
-# - course.xml
-# - itemxxxxx.xml
-# - media
-#   -- xxxxx.jpg
-
-# The output is
-# processed_items/
-# - itemxxxxx.xml
-# anki_imports/
-# - sub_category1
-#   - simple_qa.txt
-#   - blank.txt
-#   - multi_choice.txt
-#   - truth.txt
-# - sub_category2
-# {course_name}.txt
-# {course_name}.media/
 
 module SmToAnki
-  module ItemProcessor
-    
-    def simple_qa(question, answer)
-      # process the item.xml as simple Question and Answer
-      # write to output text
-      # {{Question}}, {{Answer}}, {{Explanation}}, [{{Image_URL}}], {{}}
-      return {}
-    end
-    
-    def cloze(question, answer)
-      # process the item.xml as blank filling questions
-      # write to output text
-      # 
-      return {}
-    end
-    
-    def truth(question, answer)
-      # process item.xml as a truthy question
-      return {}
-    end
-
-    def checkbox(question, answer)
-      return {}
-    end
-
-    def radio(question, answer)
-      return {}
-    end
-  end
-  
   class CourseProcessor
     include SmToAnki::ItemProcessor
     attr_reader :process_dir, :course_doc, :course_info
@@ -84,7 +37,7 @@ module SmToAnki
 
       return unless @course_doc
 
-      @course_info['title'] = @course_doc.at('title').text()
+      @course_info['title'] = @course_doc.at('title').text.downcase.sub(/\s/, '_')
       @course_info.merge!(fetch_node(@course_doc.at('course')))
     end
 
@@ -132,21 +85,5 @@ module SmToAnki
         return { node[:name] => exercise_ids }
       end
     end
-
   end
-
-
-
-  module ProcessorHelper
-    def image_uri
-      # translate image uri
-      # prepend an namespace to current url
-    end
-
-    def decode_unicode
-      # to decode utf-8 such as &245;
-    end
-  end
-
-
 end
