@@ -56,23 +56,29 @@ describe SmToAnki::CourseProcessor do
     end
 
     it "should detect truth questions by return 'truth'" do
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/truth.xml").must_equal 'truth'
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/truth.xml")
+      assert_send([@course_processor, :truth, String, String])
     end
 
     it "should detect cloze questions by return 'cloze'" do
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/single_cloze.xml").must_equal 'cloze'
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/multi_cloze.xml").must_equal 'cloze'
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/single_cloze.xml")
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/multi_cloze.xml")
+      assert_send([@course_processor, :cloze, String, String])
     end
 
     it "should detect checkbox questions by return 'checkbox'" do
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/checkbox.xml").must_equal 'checkbox'
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/checkbox.xml")
+      assert_send([@course_processor, :checkbox, String, String])
     end
     
     it "should detect radio questions by return 'radio'" do
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/radio.xml").must_equal 'radio'
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/radio.xml")
+      assert_send([@course_processor, :radio, String, String])
     end
 
     it "should detect other type as 'simple_qa'" do
-      @course_processor.detect_exercise_type("#{@working_dir}/item_types/simple_qa.xml").must_equal 'simple_qa'
+      @course_processor.detect_exercise_type("#{@working_dir}/item_types/simple_qa.xml")
+      assert_send([@course_processor, :simple_qa, String, String])
     end
+
 end
