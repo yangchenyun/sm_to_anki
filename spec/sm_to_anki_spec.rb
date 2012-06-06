@@ -5,7 +5,7 @@ require 'sm_to_anki'
 describe SmToAnki::CourseProcessor do
 
     before do
-      @working_dir = "#{File.dirname(__FILE__)}/../fixtures"
+      @working_dir = File.expand_path("#{File.dirname(__FILE__)}/../fixtures")
       @course_processor = SmToAnki::CourseProcessor.new("#@working_dir")
       @course_processor.fetch_course_info()
     end
@@ -98,14 +98,14 @@ describe SmToAnki::CourseProcessor do
       item_to_be_processed = [2,3,6,8]
       item_not_to_be_processed = [1,4,5,7,9]
       item_to_be_processed.each do |item|
-        assert_send([@course_processor, :detect_exercise_type, "item%05d.xml" % item])
+        assert_send([@course_processor, :detect_exercise_type, "#{@working_dir}/item%05d.xml" % item])
       end
     end
 
     it "should create/use file according to their types" do
-      assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").include?('simple_qa.txt'), "simple_qa.txt is not created at Category1"
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").include?('simple_qa.txt'), "simple_qa.txt is not created"
       assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category1").include?('truth.txt'), "truth.txt is not created at Category2/sub-category1"
-      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").include?('cloze.txt'), "cloze.txt is not created at Category2/sub-category1/category-level-3"
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").include? 'cloze.txt'
     end
 
     it "should not override existing record" do

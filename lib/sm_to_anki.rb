@@ -42,16 +42,17 @@ module SmToAnki
       #   return
       #
       Dir.chdir("#{parent_dir}")
-      if node.has_key? 'content'
+      if node.class == Hash && (node.has_key? 'content')
         # the root node
         anki_dir = "#{@course_info['title']}_anki"
         Dir.mkdir(anki_dir) unless File.directory?(anki_dir)
         process_course(node['content'], File.join(parent_dir, anki_dir))
       else
         node.each do |key, value|
+          Dir.chdir("#{parent_dir}")
           if value.nil?
             # The enumerator is an Array
-            process_item(key)
+            process_item(key, @process_dir)
           else
             # The enumerator is an Hash
             sub_dir = key
@@ -67,9 +68,10 @@ module SmToAnki
       # f.write(@processed_item.join(','))
     # end
 
-    def process_item(item_id)
+    def process_item(item_id, dir)
+        item_url = File.join(dir, "item#{item_id}.xml")
         unless processed?(item_id)
-          detect_exercise_type("item#{item_id}.xml")
+          detect_exercise_type(item_url)
         end
     end
 
@@ -92,7 +94,7 @@ module SmToAnki
 
     private
 
-    def processed(item_id)
+    def processed?(item_id)
       @processed_items.include? item_id
     end
 
