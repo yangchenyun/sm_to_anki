@@ -85,4 +85,32 @@ describe SmToAnki::CourseProcessor do
       assert_send([@course_processor, :simple_qa, String, String])
     end
 
+    ## process_course and items
+    it "should create an folders with corrrect hierarchy for each sub_category" do
+      @course_processor.process_course()
+      assert File.directory?("#{@working_dir}/fake_course_anki")
+      assert File.directory?("#{@working_dir}/fake_course_anki/Category1")
+      assert File.directory?("#{@working_dir}/fake_course_anki/Category2/sub-category1")
+      assert File.directory?("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3")
+    end
+
+    it "should only process validate items" do
+      item_to_be_processed = [2,3,6,8]
+      item_not_to_be_processed = [1,4,5,7,9]
+      item_to_be_processed.each do |item|
+        assert_send([@course_processor, :detect_exercise_type, "item%05d.xml" % item])
+      end
+    end
+
+    it "should create/use file according to their types" do
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").includes 'simple_qa.txt'
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category1").includes 'truth.txt'
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").includes 'cloze.txt'
+    end
+
+    it "should not override existing record" do
+      assert_equal File.open("#{@working_dir}/fake_course_anki/Category1/simple_qa.txt").readlines.size, 2
+    end
+    
+    # process each items
 end

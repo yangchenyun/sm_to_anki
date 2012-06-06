@@ -31,16 +31,21 @@ module SmToAnki
     end
 
     def process_course
-      # mkdir {course_title}_anki
-      # cd {course_title}.anki
-      # travel through the branches(keys)
-      # if the 
+      # mkdir&cd {course_title}_anki
+      #
+      # travel through the course_info['content'] branches(keys)
+      # if the current node is an Hash
+      #   build a directory use the name and cd into the directory
+      #   travel the inner nodes
+      # if the current node is an Array
+      #   process the elements of the Array
+      #   return
        
     end
 
     def process_item(item_id)
         unless processed?(item_id)
-          detect_exercise_type("#{item_id}.xml")
+          detect_exercise_type("item#{item_id}.xml")
         end
     end
 

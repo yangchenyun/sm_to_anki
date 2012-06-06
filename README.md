@@ -30,11 +30,11 @@ Or install it yourself as:
      {
        "title"=>"fake_course", 
        "content" => {
-         Category1"=>["00002", "00003"], 
+         "Category1"=>["00002", "00003"],  # simple_question
          "Category2"=>{
-           "sub-category1"=>["00006"], 
+           "sub-category1"=>["00006"], # truth
            "sub-category2"=>{
-             "category-level-3"=>["00008"]
+             "category-level-3"=>["00008"] #cloze
            }
          }
        }
