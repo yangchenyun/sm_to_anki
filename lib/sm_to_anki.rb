@@ -68,17 +68,15 @@ module SmToAnki
     # end
 
     def process_item(item_id)
-        print "#{item_id} processed"
-        # unless processed?(item_id)
-          # detect_exercise_type("")
-        # end
+        unless processed?(item_id)
+          detect_exercise_type("item#{item_id}.xml")
+        end
     end
 
-    def detect_exercise_type(item_id)
+    def detect_exercise_type(item_url)
       # call the processing function accordingly
       # Store different types in different text files
-      
-      item = Nokogiri.XML(File.open("item#{item_id}.xml"))
+      item = Nokogiri.XML(File.open(item_url))
       answer = item.at_css('item > answer').inner_html if item.at_css('item answer')
       question = item.at_css('item > question').inner_html if item.at_css('item question')
       return nil unless question

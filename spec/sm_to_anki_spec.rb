@@ -98,14 +98,14 @@ describe SmToAnki::CourseProcessor do
       item_to_be_processed = [2,3,6,8]
       item_not_to_be_processed = [1,4,5,7,9]
       item_to_be_processed.each do |item|
-        assert_send([@course_processor, :detect_exercise_type, "%05d" % item])
+        assert_send([@course_processor, :detect_exercise_type, "item%05d.xml" % item])
       end
     end
 
     it "should create/use file according to their types" do
-      assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").includes 'simple_qa.txt'
-      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category1").includes 'truth.txt'
-      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").includes 'cloze.txt'
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").include?('simple_qa.txt'), "simple_qa.txt is not created at Category1"
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category1").include?('truth.txt'), "truth.txt is not created at Category2/sub-category1"
+      assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").include?('cloze.txt'), "cloze.txt is not created at Category2/sub-category1/category-level-3"
     end
 
     it "should not override existing record" do
