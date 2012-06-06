@@ -87,7 +87,7 @@ describe SmToAnki::CourseProcessor do
 
     ## process_course and items
     it "should create an folders with corrrect hierarchy for each sub_category" do
-      @course_processor.process_course()
+      @course_processor.process_course(@course_processor.course_info, @working_dir)
       assert File.directory?("#{@working_dir}/fake_course_anki")
       assert File.directory?("#{@working_dir}/fake_course_anki/Category1")
       assert File.directory?("#{@working_dir}/fake_course_anki/Category2/sub-category1")
@@ -98,7 +98,7 @@ describe SmToAnki::CourseProcessor do
       item_to_be_processed = [2,3,6,8]
       item_not_to_be_processed = [1,4,5,7,9]
       item_to_be_processed.each do |item|
-        assert_send([@course_processor, :detect_exercise_type, "item%05d.xml" % item])
+        assert_send([@course_processor, :detect_exercise_type, "%05d" % item])
       end
     end
 

@@ -15,7 +15,7 @@ module SmToAnki
     attr_reader :process_dir, :course_doc, :course_info, :processed_items
     
     def initialize(psw)
-      @process_dir = psw
+      @process_dir = File.expand_path(psw)
       @course_info = Hash.new
       @processed_items = File.open("#{@process_dir}/processed_items.txt").read.chomp!.split(',')
     end
@@ -30,7 +30,7 @@ module SmToAnki
       end
     end
 
-    def process_course
+    def process_course(node, parent_dir)
       # mkdir&cd {course_title}_anki
       #
       # travel through the course_info['content'] branches(keys)
@@ -40,19 +40,45 @@ module SmToAnki
       # if the current node is an Array
       #   process the elements of the Array
       #   return
-       
+      #
+      Dir.chdir("#{parent_dir}")
+      if node.has_key? 'content'
+        # the root node
+        anki_dir = "#{@course_info['title']}_anki"
+        Dir.mkdir(anki_dir) unless File.directory?(anki_dir)
+        process_course(node['content'], File.join(parent_dir, anki_dir))
+      else
+        node.each do |key, value|
+          if value.nil?
+            # The enumerator is an Array
+            process_item(key)
+          else
+            # The enumerator is an Hash
+            sub_dir = key
+            Dir.mkdir(sub_dir) unless File.directory?(sub_dir)
+            process_course(value, File.join(parent_dir, sub_dir))
+          end
+        end
+      end
     end
+
+    # write to the processed_items
+    # File.open("#{@process_dir}/processed_items.txt", "w") do |f|
+      # f.write(@processed_item.join(','))
+    # end
 
     def process_item(item_id)
-        unless processed?(item_id)
-          detect_exercise_type("item#{item_id}.xml")
-        end
+        print "#{item_id} processed"
+        # unless processed?(item_id)
+          # detect_exercise_type("")
+        # end
     end
 
-    def detect_exercise_type(item_url)
+    def detect_exercise_type(item_id)
       # call the processing function accordingly
       # Store different types in different text files
-      item = Nokogiri.XML(File.open(item_url))
+      
+      item = Nokogiri.XML(File.open("item#{item_id}.xml"))
       answer = item.at_css('item > answer').inner_html if item.at_css('item answer')
       question = item.at_css('item > question').inner_html if item.at_css('item question')
       return nil unless question
@@ -65,11 +91,18 @@ module SmToAnki
       end
     end
 
-    def post_process
-      # move processed itemxxxx.xml to processed_items
-    end
 
     private
+
+    def processed(item_id)
+      @processed_items.include? item_id
+    end
+
+    def post_process(item_id)
+      # move processed itemxxxx.xml to processed_items
+      @processed_items.push item_id
+    end
+
     def fetch_node(node)
       # Depends whether its children contains exercise nodes
       case node.at_css('> element')[:type]
