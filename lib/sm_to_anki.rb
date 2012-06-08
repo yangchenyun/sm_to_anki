@@ -69,18 +69,9 @@ module SmToAnki
     # end
 
     def process_item(item_id, dir)
-        return nil if processed?(item_id)
-
-
-        case detect_item_types(item_type)
-          when 'checkbox' then checkbox()
-          when 'cloze' then cloze()
-          when 'radio' then radio()
-          when 'truth' then truth()
-          else simple_qa()
-        end
-
-        @processed_items.push item_id
+        return true
+        # return nil if processed?(item_id)
+        # @processed_items.push item_id
     end
 
 

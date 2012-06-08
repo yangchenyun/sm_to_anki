@@ -1,6 +1,6 @@
 require 'minitest/spec'
 require 'minitest/autorun'
-require '../lib/sm_to_anki/item'
+require 'sm_to_anki'
 
 describe SmToAnki::Item do
   before do
@@ -27,7 +27,8 @@ describe SmToAnki::Item do
         multi_cloze: 'cloze',
         checkbox: 'checkbox',
         truth: 'truth',
-        radio: 'radio'}.each do |file_name, type|
+        radio: 'radio'}
+      .each do |file_name, type|
           SmToAnki::Item.new(file_name.to_s, "#{@working_dir}/item_types/")
             .type.must_equal type
        end
