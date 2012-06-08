@@ -1,5 +1,6 @@
 require "sm_to_anki/version"
 require "sm_to_anki/item_process"
+require 'sm_to_anki/item'
 require 'nokogiri'
 
 
@@ -68,26 +69,18 @@ module SmToAnki
     # end
 
     def process_item(item_id, dir)
-        item_url = File.join(dir, "item#{item_id}.xml")
-        unless processed?(item_id)
-          detect_exercise_type(item_url)
-        end
-    end
+        return nil if processed?(item_id)
 
-    def detect_exercise_type(item_url)
-      # call the processing function accordingly
-      # Store different types in different text files
-      item = Nokogiri.XML(File.open(item_url))
-      answer = item.at_css('item > answer').inner_html if item.at_css('item answer')
-      question = item.at_css('item > question').inner_html if item.at_css('item question')
-      return nil unless question
-      case question
-        when /checkbox/ then checkbox(question, answer)
-        when /spellpad/ then cloze(question, answer)
-        when /radio/ then radio(question, answer)
-        when /true-false/ then truth(question, answer)
-        else simple_qa(question, answer)
-      end
+
+        case detect_item_types(item_type)
+          when 'checkbox' then checkbox()
+          when 'cloze' then cloze()
+          when 'radio' then radio()
+          when 'truth' then truth()
+          else simple_qa()
+        end
+
+        @processed_items.push item_id
     end
 
 
@@ -99,7 +92,6 @@ module SmToAnki
 
     def post_process(item_id)
       # move processed itemxxxx.xml to processed_items
-      @processed_items.push item_id
     end
 
     def fetch_node(node)
