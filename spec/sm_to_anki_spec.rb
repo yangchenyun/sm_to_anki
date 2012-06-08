@@ -7,7 +7,6 @@ describe SmToAnki::CourseProcessor do
     before do
       @working_dir = File.expand_path("#{File.dirname(__FILE__)}/../fixtures")
       @course_processor = SmToAnki::CourseProcessor.new("#@working_dir")
-      @course_processor.fetch_course_info()
     end
 
     it "process_dir should be set to current working directory" do

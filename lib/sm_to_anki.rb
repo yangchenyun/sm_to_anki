@@ -1,6 +1,5 @@
 require "sm_to_anki/version"
 require "sm_to_anki/item_process"
-
 require 'nokogiri'
 
 
@@ -18,6 +17,7 @@ module SmToAnki
       @process_dir = File.expand_path(psw)
       @course_info = Hash.new
       @processed_items = File.open("#{@process_dir}/processed_items.txt").read.chomp!.split(',')
+      self.fetch_course_info()
     end
 
     def fetch_course_info
@@ -25,7 +25,6 @@ module SmToAnki
       if @course_doc
         @course_info['title'] = @course_doc.at('title').
                                   text.downcase.sub(/\s/, '_')
-
         @course_info.merge!({"content" => fetch_node(@course_doc.at('course'))})
       end
     end
