@@ -13,7 +13,12 @@ module SmToAnki
       @answer = @node.at_css('item > answer').inner_html if @node.at_css('item answer')
       @question = @node.at_css('item > question').inner_html if @node.at_css('item question')
       @type = self.type
-      raise ItemError, "item should be question - answer pairs" unless self.is_question?
+      raise ItemError,
+        "item should be question - answer pairs" unless self.is_supermemo?
+    end
+
+    def is_supermemo?
+       @node.collect_namespaces['xmlns'] == "http://www.supermemo.net/2006/smux"
     end
 
     def type
