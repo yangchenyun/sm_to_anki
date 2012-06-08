@@ -66,7 +66,7 @@ describe SmToAnki::CourseProcessor do
       item_to_be_processed = [2,3,6,8]
       item_not_to_be_processed = [1,4,5,7,9]
       item_to_be_processed.each do |item|
-        assert_send([@course_processor, :process_item, "05d" % item, @working_dir])
+        assert_send([@course_processor, :process_item, "%05d" % item, @working_dir])
       end
     end
 

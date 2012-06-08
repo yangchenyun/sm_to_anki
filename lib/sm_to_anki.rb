@@ -17,12 +17,12 @@ module SmToAnki
     def initialize(psw)
       @process_dir = File.expand_path(psw)
       @course_info = Hash.new
-      @processed_items = File.open("#{@process_dir}/processed_items.txt").read.chomp!.split(',')
+      @processed_items = File.read("#{@process_dir}/processed_items.txt").chomp!.split(',')
       self.fetch_course_info()
     end
 
     def fetch_course_info
-      @course_doc = Nokogiri.XML(File.open("#{@process_dir}/course.xml"))
+      @course_doc = Nokogiri.XML(File.read("#{@process_dir}/course.xml"))
       if @course_doc
         @course_info['title'] = @course_doc.at('title').
                                   text.downcase.sub(/\s/, '_')
@@ -64,14 +64,15 @@ module SmToAnki
     end
 
     # write to the processed_items
-    # File.open("#{@process_dir}/processed_items.txt", "w") do |f|
+    # File.read("#{@process_dir}/processed_items.txt", "w") do |f|
       # f.write(@processed_item.join(','))
     # end
 
     def process_item(item_id, dir)
-        return true
-        # return nil if processed?(item_id)
-        # @processed_items.push item_id
+        return nil if processed?(item_id)
+        item = SmToAnki::Item.new(item_id, dir)
+        item.type
+        @processed_items.push item_id
     end
 
 
