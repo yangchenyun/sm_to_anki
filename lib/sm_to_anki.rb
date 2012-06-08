@@ -52,7 +52,7 @@ module SmToAnki
           Dir.chdir("#{parent_dir}")
           if value.nil?
             # The enumerator is an Array
-            process_item(key, @process_dir)
+            process_item(key, @process_dir, parent_dir)
           else
             # The enumerator is an Hash
             sub_dir = key
@@ -63,15 +63,10 @@ module SmToAnki
       end
     end
 
-    # write to the processed_items
-    # File.read("#{@process_dir}/processed_items.txt", "w") do |f|
-      # f.write(@processed_item.join(','))
-    # end
-
-    def process_item(item_id, dir)
+    def process_item(item_id, dir, parent_dir)
         return nil if processed?(item_id)
         item = SmToAnki::Item.new(item_id, dir)
-        item.type
+        File.open("#{parent_dir}/#{item.type}.txt", 'a:utf-8') {|f| f << item.process() + "\n"}
         @processed_items.push item_id
     end
 

@@ -1,13 +1,12 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'sm_to_anki'
-
+require 'FileUtils'
 describe SmToAnki::CourseProcessor do
 
     before do
       @working_dir = File.expand_path("#{File.dirname(__FILE__)}/../fixtures")
       @course_processor = SmToAnki::CourseProcessor.new("#@working_dir")
-      # @course_processor.fetch_course_info()
     end
 
     it "process_dir should be set to current working directory" do
@@ -63,10 +62,11 @@ describe SmToAnki::CourseProcessor do
     end
 
     it "should only process validate items" do
+      mock = MiniTest::Mock.new
       item_to_be_processed = [2,3,6,8]
       item_not_to_be_processed = [1,4,5,7,9]
       item_to_be_processed.each do |item|
-        assert_send([@course_processor, :process_item, "%05d" % item, @working_dir])
+        mock.expect(:process_item, true, ["%05d" % item, @working_dir, String])
       end
     end
 
@@ -81,4 +81,9 @@ describe SmToAnki::CourseProcessor do
     end
     
     # process each items
+    
+    # clear temporary files
+   it "should clear leftovers" do
+     FileUtils.rm_rf("#{@working_dir}/fake_course_anki/")
+   end
 end

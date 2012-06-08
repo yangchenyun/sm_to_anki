@@ -9,7 +9,7 @@ module SmToAnki
     def initialize(item_id, dir)
       @id = item_id
       @abs_url = File.join(dir, "item#{item_id}.xml")
-      @node = Nokogiri.XML(File.open(@abs_url))
+      @node = Nokogiri.XML(File.read(@abs_url))
       @answer = @node.at_css('item > answer').inner_html if @node.at_css('item answer')
       @question = @node.at_css('item > question').inner_html if @node.at_css('item question')
       @type = self.type
@@ -33,5 +33,8 @@ module SmToAnki
       end
     end
 
+    def process
+      return "true"
+    end
   end
 end
