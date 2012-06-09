@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item xmlns="http://www.supermemo.net/2006/smux">
+  <question><gfx file="d" scale-base="720" /><gfx item-id="117" file="e" scale-base="720" /><br />
+With the HTML and CSS, choose the right display. <radio orientation="horizontal" display="inline"><option correct="true">a</option><option>b</option></radio><br />
+<br />
+a.<gfx item-id="117" file="c" scale-base="800" />b.<gfx item-id="117" file="b" scale-base="800" /><br />
+<br />
+</question>
+  <answer>Note that the border or padding should be applied to the parent div to stop the margin collapse.</answer>
+  <modified>2011-01-24</modified>
+  <template-id>1</template-id>
+</item>

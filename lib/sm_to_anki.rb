@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "sm_to_anki/version"
 require "sm_to_anki/item_process"
 require 'sm_to_anki/item'

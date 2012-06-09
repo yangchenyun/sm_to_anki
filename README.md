@@ -65,6 +65,7 @@ Items are stored according to their types and are within the category they belon
 
 ### Media Files Processing
 Files within original media folder are prepended with a namespace
+<!-- <gfx item-id="117" file="e" scale-base="720" /> -->
 `xxxxxa.jpg` will be converted to `course_title_xxxxx1.jpg`
 *course_title* is transformed from the `<title>` field of the `course.xml` file and is converted to underscore.
 

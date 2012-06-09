@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'nokogiri'
 
 module SmToAnki
@@ -34,7 +36,19 @@ module SmToAnki
     end
 
     def process
-      return "true"
+      return "a|b|c"
+      
+    end
+
+    private
+
+    def image_uri
+      # translate resource to <img> tags
+      # prepend an namespace to current url
+    end
+
+    def decode_unicode
+      # to decode utf-8 such as &245;
     end
   end
 end
