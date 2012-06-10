@@ -10,7 +10,7 @@ describe SmToAnki::Item do
   end
 
   it "should create an SmToAnki::Item instance from Supermemo SmToAnki::Item xml files" do
-    item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/")
+    item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
     item.id.must_equal 'simple_qa'
     item.abs_url.must_equal File.join("#{@working_dir}/item_types/", "itemsimple_qa.xml")
     item.question.must_equal "What's the difference between child selector and descendant selector?"
@@ -19,7 +19,7 @@ describe SmToAnki::Item do
 
   it "should raise an error for other xml files" do
     assert_raises SmToAnki::Item::ItemError do
-      SmToAnki::Item.new("not_supermemo", "#{@working_dir}/item_types/")
+      SmToAnki::Item.new("not_supermemo", "#{@working_dir}/item_types/", 'fake_course')
     end
   end
 
@@ -31,7 +31,7 @@ describe SmToAnki::Item do
         truth: 'truth',
         radio: 'radio'}
       .each do |file_name, type|
-          SmToAnki::Item.new(file_name.to_s, "#{@working_dir}/item_types/")
+          SmToAnki::Item.new(file_name.to_s, "#{@working_dir}/item_types/", 'fake_course')
             .type.must_equal type
        end
   end
@@ -41,7 +41,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse simple to three fields" do
-      item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 3
       assert assert result[0].include?('simple_qa')
@@ -50,7 +50,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse radio to four fields, parse the <radio> tag correctly" do
-      item = SmToAnki::Item.new("radio", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("radio", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 4
       assert result[0].include?('radio') # id
@@ -61,7 +61,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse checkbox to four fields, parse the <checkbox> tag correctly" do
-      item = SmToAnki::Item.new("checkbox", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("checkbox", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 4
       assert result[0].include?('checkbox') # id
@@ -73,7 +73,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse truth to four fields, parse the <true-false> tag correctly" do
-      item = SmToAnki::Item.new("truth", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("truth", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 4
       assert result[0].include?('truth') # id
@@ -84,7 +84,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse single cloze correctly with the <spellpad> tag" do
-      item = SmToAnki::Item.new("single_cloze", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("single_cloze", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 3
       assert result[0].include?('single_cloze') # id
@@ -94,7 +94,7 @@ describe SmToAnki::Item do
   end
 
   it "should parse multiple cloze correctly with the <spellpad> tag" do
-      item = SmToAnki::Item.new("multi_cloze", "#{@working_dir}/item_types/")
+      item = SmToAnki::Item.new("multi_cloze", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
       result.length.must_equal 4
       assert result[0].include?('multi_cloze') # id
@@ -105,23 +105,22 @@ describe SmToAnki::Item do
   end
 
   it "should keep html tags" do
-      item = SmToAnki::Item.new("html_tag", "#{@working_dir}/field_processing/")
+      item = SmToAnki::Item.new("html_tag", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
       assert result[2].include?("<span>bold</span><br />")
   end
 
   it "should parse the <gfx> tags to <img> tag" do
-      item = SmToAnki::Item.new("img", "#{@working_dir}/field_processing/")
+      item = SmToAnki::Item.new("img", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
       assert result[1].include?('<img src="fake_course_imgd.jpg" />')
       assert result[1].include?('<img src="fake_course_00117e.jpg" />')
   end
 
   it "should decode utf-8 encoding string" do
-      item = SmToAnki::Item.new("utf8", "#{@working_dir}/field_processing/")
+      item = SmToAnki::Item.new("utf8", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
       assert result[2].include?("/t'ɔːrtəs/")
   end
 
 end
-

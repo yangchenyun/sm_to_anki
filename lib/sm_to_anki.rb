@@ -66,7 +66,7 @@ module SmToAnki
 
     def process_item(item_id, dir, parent_dir)
         return nil if processed?(item_id)
-        item = SmToAnki::Item.new(item_id, dir)
+        item = SmToAnki::Item.new(item_id, dir, @course_info['title'])
         File.open("#{parent_dir}/#{item.type}.txt", 'a:utf-8') {|f| f << item.process() + "\n"}
         @processed_items.push item_id
     end

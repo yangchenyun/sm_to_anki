@@ -8,8 +8,9 @@ module SmToAnki
     class ItemError < StandardError; end
     attr_reader :id, :abs_url, :type, :question, :answer
 
-    def initialize(item_id, dir)
+    def initialize(item_id, dir, course)
       @id = item_id
+      @course = course
       @abs_url = File.join(dir, "item#{item_id}.xml")
       @node = Nokogiri.XML(File.read(@abs_url))
       @answer = @node.at_css('item > answer').inner_html if @node.at_css('item answer')
@@ -36,8 +37,22 @@ module SmToAnki
     end
 
     def process
-      return "a|b|c"
-      
+      return '1|b|c'
+      case self.type
+      when 'simple_qa'
+
+      when 'radio'
+
+      when 'checkbox'
+
+      when 'cloze'
+
+      when 'truth'
+
+      else
+        raise ItemError,
+          "item couldn't be processed as the type is unknow"
+      end
     end
 
     private
