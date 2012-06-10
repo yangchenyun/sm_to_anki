@@ -3,6 +3,7 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'sm_to_anki'
+require 'nokogiri'
 
 describe SmToAnki::Item do
   before do
@@ -13,8 +14,9 @@ describe SmToAnki::Item do
     item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
     item.id.must_equal 'simple_qa'
     item.abs_url.must_equal File.join("#{@working_dir}/item_types/", "itemsimple_qa.xml")
-    item.question.must_equal "What's the difference between child selector and descendant selector?"
-    item.answer.must_equal "The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants."
+    item.course = 'fake_course'
+    item.question.text.must_equal "What's the difference between child selector and descendant selector?"
+    item.answer.text.must_equal "The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants."
   end
 
   it "should raise an error for other xml files" do

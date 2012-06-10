@@ -1,0 +1,2 @@
+fake_course_00002|What's the difference between child selector and descendant selector?|The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants.
+fake_course_00003|What's the difference between child selector and descendant selector?|The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants.
