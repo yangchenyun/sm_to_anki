@@ -14,7 +14,7 @@ describe SmToAnki::Item do
     item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
     item.id.must_equal 'simple_qa'
     item.abs_url.must_equal File.join("#{@working_dir}/item_types/", "itemsimple_qa.xml")
-    item.course = 'fake_course'
+    item.course.must_equal 'fake_course'
     item.question.text.must_equal "What's the difference between child selector and descendant selector?"
     item.answer.text.must_equal "The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants."
   end
@@ -109,20 +109,20 @@ describe SmToAnki::Item do
   it "should keep html tags" do
       item = SmToAnki::Item.new("html_tag", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
-      assert result[2].include?("<span>bold</span><br />")
+      assert result[2].include?("<span>bold</span><br></br>"), "Failed, the passed in is #{result[2]}"
   end
 
   it "should parse the <gfx> tags to <img> tag" do
       item = SmToAnki::Item.new("img", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
-      assert result[1].include?('<img src="fake_course_imgd.jpg" />')
-      assert result[1].include?('<img src="fake_course_00117e.jpg" />')
+      assert result[1].include?('<img src="fake_course_imgd.jpg"></img>'), "Failsed, the passed in is #{result[1]}"
+      assert result[1].include?('<img src="fake_course_00117e.jpg"></img>'), "Failed, the passed in is #{result[1]}"
   end
 
   it "should decode utf-8 encoding string" do
       item = SmToAnki::Item.new("utf8", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
-      assert result[2].include?("/t'ɔːrtəs/")
+      assert result[2].include?("/t'ɔːrtəs/"), "Failed, the real passed in is #{result[2]}"
   end
 
 end

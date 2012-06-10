@@ -1,6 +1,6 @@
 # encoding: utf-8
-
 require 'nokogiri'
+require 'htmlentities'
 
 module SmToAnki
 
@@ -41,8 +41,8 @@ module SmToAnki
       case self.type
         when 'simple_qa'
           id_field = "#{@course}_#{@id}"
-          question_field = @question
-          answer_field = @answer
+          question_field = decode_unicode(@question.inner_html)
+          answer_field = decode_unicode(@answer.inner_html)
           return [id_field, question_field, answer_field].join('|')
         when 'radio'
 
@@ -64,15 +64,17 @@ module SmToAnki
       # translate resource to <img> tags
       # prepend an namespace to current url
       @question.css('gfx').each do |img_node|
-        print @id
         file_name = img_node['item-id'] || @id
+        file_name = "%05d" % file_name.to_i unless file_name.to_i == 0
         file_label = img_node['file']
-        img_node.replace("<img src='#{@course}_#{file_name}#{file_label}'/>")
+        img_node.replace("<img src='#{@course}_#{file_name}#{file_label}.jpg'/>")
       end
     end
 
-    def decode_unicode
-      # to decode utf-8 such as &245;
+    def decode_unicode(string)
+      coder = HTMLEntities.new
+      string = coder.decode(string)
+      string = coder.decode(string)
     end
   end
 end
