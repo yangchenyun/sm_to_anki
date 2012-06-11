@@ -3,7 +3,7 @@ require "sm_to_anki/version"
 require "sm_to_anki/item_process"
 require 'sm_to_anki/item'
 require 'nokogiri'
-
+require 'FileUtils'
 
 module SmToAnki
   class CourseProcessor
@@ -33,6 +33,17 @@ module SmToAnki
 
     def convert
       self.process_course(@course_info, @process_dir)
+    end
+
+    def process_media
+      dst = "#{@process_dir}/#{@course_info['title']}_media"
+      src = "#{@process_dir}/media"
+      Dir.mkdir(dst)
+      Dir.chdir(src)
+      Dir.glob('*') do |file_name|
+        FileUtils.cp file_name,
+          "../#{@course_info['title']}_media/#{@course_info['title']}_#{file_name}"
+      end
     end
 
     def process_course(node, parent_dir)

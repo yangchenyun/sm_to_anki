@@ -80,8 +80,16 @@ describe SmToAnki::CourseProcessor do
 
     end
 
+    it "should create an media folder and process all the media files" do
+      @course_processor.process_media()
+      assert File.directory?("#{@working_dir}/fake_course_media")
+      assert File.exist?("#{@working_dir}/fake_course_media/fake_course_00142b.jpg")
+      assert File.exist?("#{@working_dir}/fake_course_media/fake_course_00143b.gif")
+    end
+
     it "should clear the temporary folder at end" do
     # clear temporary files
-     FileUtils.rm_rf("#{@working_dir}/fake_course_anki/")
+      FileUtils.rm_rf("#{@working_dir}/fake_course_anki/")
+      FileUtils.rm_rf("#{@working_dir}/fake_course_media/")
     end
 end
