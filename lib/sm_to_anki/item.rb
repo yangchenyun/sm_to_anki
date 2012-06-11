@@ -67,6 +67,13 @@ module SmToAnki
       when 'cloze'
 
       when 'truth'
+        options = {}
+        options['true'] = @question.at_css('true-false')['true']
+        options['false'] = @question.at_css('true-false')['false']
+        answer_field = options[@question.at_css('true-false')['correct']]
+        question_field = decode_unicode(@question.inner_html).gsub(/<true-false(.+)true-false>/, options.values.join('/'))
+        explanation_field = decode_unicode(@answer.inner_html) if @answer
+        return [id_field, question_field, answer_field, explanation_field].join('|')
 
       else
         raise ItemError,
