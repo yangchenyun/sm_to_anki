@@ -67,7 +67,7 @@ describe SmToAnki::Item do
 
   it "should parse checkbox to four fields, parse the <checkbox> tag correctly" do
       item = SmToAnki::Item.new("checkbox", "#{@working_dir}/item_types/", 'fake_course')
-      result = item.process.split('|')
+      result = item.process.split('|', -1)
       result.length.must_equal 4
       assert result[0].include?('checkbox') # id
       assert result[1].include?("div * em") # question
@@ -79,7 +79,7 @@ describe SmToAnki::Item do
 
   it "should parse truth to four fields, parse the <true-false> tag correctly" do
       item = SmToAnki::Item.new("truth", "#{@working_dir}/item_types/", 'fake_course')
-      result = item.process.split('|')
+      result = item.process.split('|', -1)
       result.length.must_equal 4
       assert result[0].include?('truth') # id
       assert result[1].include?("Doctype sniffing") # question
@@ -90,7 +90,7 @@ describe SmToAnki::Item do
 
   it "should parse single cloze correctly with the <spellpad> tag" do
       item = SmToAnki::Item.new("single_cloze", "#{@working_dir}/item_types/", 'fake_course')
-      result = item.process.split('|')
+      result = item.process.split('|', -1)
       result.length.must_equal 3
       assert result[0].include?('single_cloze') # id
       assert result[1].include?("How to selector") # question
@@ -100,13 +100,13 @@ describe SmToAnki::Item do
 
   it "should parse multiple cloze correctly with the <spellpad> tag" do
       item = SmToAnki::Item.new("multi_cloze", "#{@working_dir}/item_types/", 'fake_course')
-      result = item.process.split('|')
-      result.length.must_equal 3
+      result = item.process.split('|', -1)
+      result.length.must_equal 3, "#{result}"
       assert result[0].include?('multi_cloze') # id
       assert result[1].include?("Pseudo-class") # question
       assert result[1].include?("{{c1:::link}}") # cloze 1
       assert result[1].include?("{{c2:::visited}}") # cloze 2
-      assert result[2].include?("") # answer use the String in false field
+      assert result[2].include?("")
   end
 
   it "should keep html tags" do

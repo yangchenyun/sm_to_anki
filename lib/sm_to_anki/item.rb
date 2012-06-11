@@ -39,19 +39,20 @@ module SmToAnki
 
     def process
       id_field = "#{@course}_#{@id}"
+      explanation_field = @answer ? decode_unicode(@answer.inner_html) : ""
+
       case self.type
       when 'simple_qa'
         question_field = decode_unicode(@question.inner_html)
-        answer_field = decode_unicode(@answer.inner_html)
-        return [id_field, question_field, answer_field].join('|')
+        return [id_field, question_field, explanation_field].join('|')
       when 'radio'
         options = []
+        answer_field = ""
         @question.css('radio option').each do |option|
           answer_field = decode_unicode(option.inner_html) if option[:correct] == "true"
           options.push decode_unicode(option.inner_html)
         end
         question_field = decode_unicode(@question.inner_html).gsub(/<radio(.+)radio>/, options.join('/'))
-        explanation_field = decode_unicode(@answer.inner_html) if @answer
         return [id_field, question_field, answer_field, explanation_field].join('|')
       when 'checkbox'
         options = []
@@ -62,16 +63,14 @@ module SmToAnki
         end
         answer_field = answers.join('/')
         question_field = decode_unicode(@question.inner_html).gsub(/<checkbox(.+)checkbox>/, options.join('/'))
-        explanation_field = decode_unicode(@answer.inner_html) if @answer
         return [id_field, question_field, answer_field, explanation_field].join('|')
+
       when 'cloze'
         question_field = decode_unicode(@question.inner_html)
-        
         @question.css('spellpad').length.times do |count|
-          question_field.sub!(/<spellpad correct="(.+)"(.+)spellpad>/, "{{c#{count+1}::\\1}}")
+          question_field.sub!(/<spellpad correct="(.+?)"(.+?)spellpad>/, "{{c#{count+1}::\\1}}")
         end
-        answer_field = decode_unicode(@answer.inner_html) if @answer
-        return [id_field, question_field, answer_field].join('|')
+        return [id_field, question_field, explanation_field].join('|')
 
       when 'truth'
         options = {}
@@ -79,7 +78,6 @@ module SmToAnki
         options['false'] = @question.at_css('true-false')['false']
         answer_field = options[@question.at_css('true-false')['correct']]
         question_field = decode_unicode(@question.inner_html).gsub(/<true-false(.+)true-false>/, options.values.join('/'))
-        explanation_field = decode_unicode(@answer.inner_html) if @answer
         return [id_field, question_field, answer_field, explanation_field].join('|')
 
       else
