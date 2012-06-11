@@ -45,9 +45,10 @@ describe SmToAnki::Item do
   end
 
   it "should not contain newline character" do
-      item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
+      item = SmToAnki::Item.new("newline", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
-      refute result[2].include?('\n')
+      puts "#{result}"
+      assert !result[2].include?('\n')
       assert result[2].include?('<br></br>')
   end
 
