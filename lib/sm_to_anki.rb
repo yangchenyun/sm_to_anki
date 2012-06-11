@@ -1,14 +1,11 @@
 # encoding: utf-8
 require "sm_to_anki/version"
-require "sm_to_anki/item_process"
 require 'sm_to_anki/item'
 require 'nokogiri'
 require 'FileUtils'
 
 module SmToAnki
   class CourseProcessor
-    include SmToAnki::ItemProcessor
-
     # process_dir contains current working directory
     # course_doc is the hold an Nokogiri instance of course.xml
     # course_info holds an Ruby hash containing the course information

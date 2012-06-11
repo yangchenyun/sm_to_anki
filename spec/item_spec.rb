@@ -48,7 +48,7 @@ describe SmToAnki::Item do
       item = SmToAnki::Item.new("newline", "#{@working_dir}/field_processing/", 'fake_course')
       result = item.process.split('|')
       puts "#{result}"
-      assert !result[2].include?('\n')
+      assert !result[2].include?("\n")
       assert result[2].include?('<br></br>')
   end
 
