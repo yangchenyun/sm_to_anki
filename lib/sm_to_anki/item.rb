@@ -65,6 +65,13 @@ module SmToAnki
         explanation_field = decode_unicode(@answer.inner_html) if @answer
         return [id_field, question_field, answer_field, explanation_field].join('|')
       when 'cloze'
+        question_field = decode_unicode(@question.inner_html)
+        
+        @question.css('spellpad').length.times do |count|
+          question_field.sub!(/<spellpad correct="(.+)"(.+)spellpad>/, "{{c#{count+1}::\\1}}")
+        end
+        answer_field = decode_unicode(@answer.inner_html) if @answer
+        return [id_field, question_field, answer_field].join('|')
 
       when 'truth'
         options = {}

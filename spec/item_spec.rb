@@ -94,14 +94,14 @@ describe SmToAnki::Item do
       result.length.must_equal 3
       assert result[0].include?('single_cloze') # id
       assert result[1].include?("How to selector") # question
-      assert result[1].include?("{{c1::h2+p}})") # the cloze
+      assert result[1].include?("{{c1::h2+p}}") # the cloze
       assert result[2].include?("An adjacent selector") 
   end
 
   it "should parse multiple cloze correctly with the <spellpad> tag" do
       item = SmToAnki::Item.new("multi_cloze", "#{@working_dir}/item_types/", 'fake_course')
       result = item.process.split('|')
-      result.length.must_equal 4
+      result.length.must_equal 3
       assert result[0].include?('multi_cloze') # id
       assert result[1].include?("Pseudo-class") # question
       assert result[1].include?("{{c1:::link}}") # cloze 1
