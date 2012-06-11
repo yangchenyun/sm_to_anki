@@ -39,7 +39,9 @@ describe SmToAnki::Item do
   end
 
   it "should generate the first field as {course_title}_id" do
-
+      item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
+      result = item.process.split('|')
+      assert result[0].include?('fake_course_simple_qa')
   end
 
   it "should parse simple to three fields" do

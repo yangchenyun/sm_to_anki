@@ -18,6 +18,7 @@ module SmToAnki
       @type = self.type
       raise ItemError,
         "item should be question - answer pairs" unless self.is_supermemo?
+      image_uri()
     end
 
     def is_supermemo?
@@ -37,24 +38,30 @@ module SmToAnki
     end
 
     def process
-      image_uri()
+      id_field = "#{@course}_#{@id}"
       case self.type
-        when 'simple_qa'
-          id_field = "#{@course}_#{@id}"
-          question_field = decode_unicode(@question.inner_html)
-          answer_field = decode_unicode(@answer.inner_html)
-          return [id_field, question_field, answer_field].join('|')
-        when 'radio'
+      when 'simple_qa'
+        question_field = decode_unicode(@question.inner_html)
+        answer_field = decode_unicode(@answer.inner_html)
+        return [id_field, question_field, answer_field].join('|')
+      when 'radio'
+        options = []
+        @question.css('radio option').each do |option|
+          answer_field = decode_unicode(option.inner_html) if option[:correct] == "true"
+          options.push decode_unicode(option.inner_html)
+        end
+        question_field = decode_unicode(@question.inner_html).gsub(/<radio(.+)radio>/, options.join('/'))
+        explanation_field = decode_unicode(@answer.inner_html)
+        return [id_field, question_field, answer_field, explanation_field].join('|')
+      when 'checkbox'
 
-        when 'checkbox'
+      when 'cloze'
 
-        when 'cloze'
+      when 'truth'
 
-        when 'truth'
-
-        else
-          raise ItemError,
-            "item couldn't be processed as the type is unknow"
+      else
+        raise ItemError,
+          "item couldn't be processed as the type is unknow"
       end
     end
 
@@ -67,7 +74,7 @@ module SmToAnki
         file_name = img_node['item-id'] || @id
         file_name = "%05d" % file_name.to_i unless file_name.to_i == 0
         file_label = img_node['file']
-        img_node.replace("<img src='#{@course}_#{file_name}#{file_label}.jpg'/>")
+        img_node.replace("<img src='#{@course}_#{file_name}#{file_label}.jpg'></img>")
       end
     end
 
