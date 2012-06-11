@@ -51,10 +51,19 @@ module SmToAnki
           options.push decode_unicode(option.inner_html)
         end
         question_field = decode_unicode(@question.inner_html).gsub(/<radio(.+)radio>/, options.join('/'))
-        explanation_field = decode_unicode(@answer.inner_html)
+        explanation_field = decode_unicode(@answer.inner_html) if @answer
         return [id_field, question_field, answer_field, explanation_field].join('|')
       when 'checkbox'
-
+        options = []
+        answers = []
+        @question.css('checkbox option').each do |option|
+          answers.push decode_unicode(option.inner_html) if option[:correct] == "true"
+          options.push decode_unicode(option.inner_html)
+        end
+        answer_field = answers.join('/')
+        question_field = decode_unicode(@question.inner_html).gsub(/<checkbox(.+)checkbox>/, options.join('/'))
+        explanation_field = decode_unicode(@answer.inner_html) if @answer
+        return [id_field, question_field, answer_field, explanation_field].join('|')
       when 'cloze'
 
       when 'truth'

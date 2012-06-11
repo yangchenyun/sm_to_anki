@@ -25,7 +25,7 @@ describe SmToAnki::Item do
     end
   end
 
-  it "should detect the right item type" do
+ it "should detect the right item type" do
       { simple_qa: 'simple_qa',
         single_cloze: 'cloze',
         multi_cloze: 'cloze',
@@ -43,6 +43,7 @@ describe SmToAnki::Item do
       result = item.process.split('|')
       assert result[0].include?('fake_course_simple_qa')
   end
+
 
   it "should parse simple to three fields" do
       item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
@@ -72,8 +73,8 @@ describe SmToAnki::Item do
       assert result[1].include?("div * em") # question
       assert result[1].include?("“Universal” in the h1 element/") # question / choice
       assert result[1].include?("“immediate” in the forth em element") # question / choice
-      assert result[2].include?("“/emphasize” in the p element") # answer
-      assert result[3].include?("the universal selector doesn't match") # explanation
+      assert result[2].include?("“emphasize” in the p element") # answer
+      assert result[3].include?("the universal selector doesn’t match “zero or more elements.") # explanation
   end
 
   it "should parse truth to four fields, parse the <true-false> tag correctly" do
