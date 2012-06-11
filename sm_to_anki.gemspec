@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = SmToAnki::VERSION
 
   gem.add_dependency "nokogiri", "~> 1.5.0"
+  gem.add_dependency "htmlentities", "~> 4.3.0"
   gem.add_development_dependency 'minitest', '~> 3.0'
 end
