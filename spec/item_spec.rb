@@ -16,7 +16,7 @@ describe SmToAnki::Item do
     item.abs_url.must_equal File.join("#{@working_dir}/item_types/", "itemsimple_qa.xml")
     item.course.must_equal 'fake_course'
     item.question.text.must_equal "What's the difference between child selector and descendant selector?"
-    item.answer.text.must_equal "The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants."
+    item.answer.text.must_equal "The descendant selector matches all elements \\n that are descendants of the parent element, including elements that are not direct descendants."
   end
 
   it "should raise an error for other xml files" do
@@ -44,6 +44,12 @@ describe SmToAnki::Item do
       assert result[0].include?('fake_course_simple_qa')
   end
 
+  it "should not contain newline character" do
+      item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')
+      result = item.process.split('|')
+      refute result[2].include?('\n')
+      assert result[2].include?('<br></br>')
+  end
 
   it "should parse simple to three fields" do
       item = SmToAnki::Item.new("simple_qa", "#{@working_dir}/item_types/", 'fake_course')

@@ -78,6 +78,9 @@ describe SmToAnki::CourseProcessor do
       # should not override existing record
       assert_equal File.open("#{@working_dir}/fake_course_anki/Category1/simple_qa.txt").readlines.size, 2
 
+    end
+
+    it "should clear the temporary folder at end" do
     # clear temporary files
      FileUtils.rm_rf("#{@working_dir}/fake_course_anki/")
     end

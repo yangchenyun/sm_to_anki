@@ -103,6 +103,8 @@ module SmToAnki
       coder = HTMLEntities.new
       string = coder.decode(string)
       string = coder.decode(string)
+      string.gsub!('\n', '<br></br>')
+      string
     end
   end
 end

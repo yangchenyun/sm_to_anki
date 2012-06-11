@@ -31,6 +31,10 @@ module SmToAnki
       end
     end
 
+    def convert
+      self.process_course(@course_info, @process_dir)
+    end
+
     def process_course(node, parent_dir)
       # mkdir&cd {course_title}_anki
       #

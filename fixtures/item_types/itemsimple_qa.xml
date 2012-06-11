@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item xmlns="http://www.supermemo.net/2006/smux">
   <question>What's the difference between child selector and descendant selector?</question>
-  <answer>The descendant selector matches all elements that are descendants of the parent element, including elements that are not direct descendants.</answer>
+  <answer>The descendant selector matches all elements \n that are descendants of the parent element, including elements that are not direct descendants.</answer>
   <modified>2011-01-19</modified>
   <template-id>1</template-id>
 </item>
