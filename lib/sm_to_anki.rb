@@ -18,7 +18,7 @@ module SmToAnki
     def initialize(psw)
       @process_dir = File.expand_path(psw)
       @course_info = Hash.new
-      @processed_items = File.read("#{@process_dir}/processed_items.txt").chomp!.split(',')
+      @processed_items = File.exist?("#{@process_dir}/processed_items.txt") ? File.read("#{@process_dir}/processed_items.txt").chomp!.split(',') : []
       self.fetch_course_info()
     end
 
@@ -33,6 +33,7 @@ module SmToAnki
 
     def convert
       self.process_course(@course_info, @process_dir)
+      self.process_media
     end
 
     def process_media
