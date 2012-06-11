@@ -69,22 +69,16 @@ describe SmToAnki::CourseProcessor do
       item_to_be_processed.each do |item|
         mock.expect(:process_item, true, ["%05d" % item, @working_dir, String])
       end
-    end
 
-    it "should create/use file according to their types" do
+      # should create/use file according to their types
       assert Dir.entries("#{@working_dir}/fake_course_anki/Category1").include?('simple_qa.txt'), "simple_qa.txt is not created"
       assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category1").include?('truth.txt'), "truth.txt is not created at Category2/sub-category1"
       assert Dir.entries("#{@working_dir}/fake_course_anki/Category2/sub-category2/category-level-3").include? 'cloze.txt'
-    end
 
-    it "should not override existing record" do
+      # should not override existing record
       assert_equal File.open("#{@working_dir}/fake_course_anki/Category1/simple_qa.txt").readlines.size, 2
-    end
-    
-    # process each items
-    
+
     # clear temporary files
-   it "should clear leftovers" do
      FileUtils.rm_rf("#{@working_dir}/fake_course_anki/")
-   end
+    end
 end
